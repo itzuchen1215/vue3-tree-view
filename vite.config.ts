@@ -9,6 +9,7 @@ export default defineConfig({
   build: {
     outDir: './docs',
   },
+  base: process.env.NODE_ENV === 'production' ? '/vue3-tree-view/' : '/',
   plugins: [
     vue(),
     vueJsx(),
