@@ -1,4 +1,4 @@
-import { type ITree, type ITreeNode } from "@/components/tree-view/types"
+import type { ITree } from "@/components/tree-view/types"
 import { ref, toRaw } from "vue";
 
 const defaultList: ITree[] = [
@@ -127,7 +127,6 @@ export function useTreeView() {
   const treeData = ref<ITree[]>(defaultList);
   const treeDepth = ref<number>(0);
   const selectList = ref<ISelectList[]>([]);
-  const treeLevelMap = ref<any[]>([]);
 
   function getSelectList(treeData: ITree[], parentId: string | null = null, level = 0) {
     let list: ISelectList[] = [];
@@ -149,16 +148,6 @@ export function useTreeView() {
       }
     }
     return list;
-  }
-
-  function updateExpendIdsBySelectedId(list: ISelectList[], selectedId: string) {
-    const targetItem = list.find(item => item.id === selectedId);
-    if (!targetItem) {
-      return;
-    }
-    if (targetItem.level === 0) {
-
-    }
   }
 
   function getTreeDepth(data: ITree[]) {

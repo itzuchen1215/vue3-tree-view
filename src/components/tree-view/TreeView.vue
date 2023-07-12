@@ -20,22 +20,14 @@ const {
   setExpendedIdsMapping,
 } = useTreeViewStore()!;
 
-const emit = defineEmits<{
-  (e: 'update:modelValue', id: string | null): void
-}>()
+// const emit = defineEmits<{
+//   (e: 'update:modelValue', id: string | null): void
+// }>()
 
 const props = defineProps({
   treeData: {
-    type: Object as PropType<ITree[]>,
+    type: Array as PropType<ITree[]>,
     default: () => [],
-  },
-  defaultSelectedId: {
-    type: String,
-    default: null,
-  },
-  selectedId: {
-    type: String,
-    default: null,
   },
   level: {
     type: Number,
