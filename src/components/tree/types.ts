@@ -8,7 +8,6 @@ export type ITreeNode = Omit<ITree, 'children'>;
 
 export interface ITreeInitValue {
   treeData: ITree[];
-  depth: number;
   selectedId: string | null;
   expendedIds?: (string | null)[];
 }

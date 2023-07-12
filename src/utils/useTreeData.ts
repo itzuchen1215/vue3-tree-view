@@ -1,5 +1,6 @@
-import type { ITree } from "@/components/tree-view/types"
-import { ref, toRaw } from "vue";
+import type { ITree } from "@/components/tree/types"
+import type { ITreeNode } from "@/components/tree/types";
+import { ref } from "vue";
 
 const defaultList: ITree[] = [
   {
@@ -120,63 +121,42 @@ interface ISelectList {
   id: string;
   label: string | null;
   parentId: string | null;
-  level: number;
 }
 
-export function useTreeView() {
-  const treeData = ref<ITree[]>(defaultList);
-  const treeDepth = ref<number>(0);
+export function useTreeData() {
+  const treeData = ref<ITree[]>([]);
   const selectList = ref<ISelectList[]>([]);
 
-  function getSelectList(treeData: ITree[], parentId: string | null = null, level = 0) {
+  function getSelectList(treeData: ITree[], parentId: string | null = null): ISelectList[] {
     let list: ISelectList[] = [];
-    const levelCount = level;
   
-    for (const item of treeData) {
-      const flatItem: ISelectList = {
+    for (let item of treeData) {
+      let flatItem = {
         id: item.id,
         label: item.label,
         parentId,
-        level,
       };
-  
       list.push(flatItem);
   
       if (item.children && item.children.length > 0) {
-        const children = getSelectList(item.children, item.id, levelCount+1);
+        let children = getSelectList(item.children, item.id);
         list = list.concat(children);
       }
     }
+  
     return list;
   }
 
-  function getTreeDepth(data: ITree[]) {
-    if (!data || data.length === 0) {
-      return 0;
-    }
-
-    let depth = 0;
-    const queueArr = structuredClone(toRaw(data));
-
-    while (queueArr.length > 0) {
-      const levelSize = queueArr.length;
-      for (let i = 0; i < levelSize; i++) {
-        const node = queueArr.shift();
-        if (node && node.children && node.children.length > 0) {
-          queueArr.push(...node.children);
-        }
-      }
-      depth++;
-    }
-    return depth;
+  async function getTreeData() {
+    setTimeout(() => {
+      treeData.value = defaultList;
+      selectList.value = getSelectList(treeData.value);
+    }, 50);
   }
-
-  
-  treeDepth.value = getTreeDepth(treeData.value);
-  selectList.value = getSelectList(treeData.value);
 
   return {
     treeData,
-    treeDepth,
+    selectList,
+    getTreeData,
   }
 }

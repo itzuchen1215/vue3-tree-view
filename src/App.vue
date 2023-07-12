@@ -1,45 +1,15 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import TreeView from './components/tree-view/TreeView.vue';
-import { useTreeView } from '@/utils/useTreeData';
-import { useProvideTreeViewStore } from '@/components/tree-view/treeViewStore';
-import type { ITree, ITreeNode } from './components/tree-view/types';
+import Tree from './components/tree/Tree.vue';
+import { useTreeData } from '@/utils/useTreeData';
 
 
-const { treeData, treeDepth } = useTreeView();
+const { treeData, selectList, getTreeData } = useTreeData();
+const selectedId = ref<string | null>(null);
 
+// simulate async api get list
+getTreeData();
 
-const { selectedId } = useProvideTreeViewStore({
-  treeData: treeData.value,
-  depth: treeDepth.value,
-  selectedId: 'b61',
-  expendedIds: [],
-});
-
-const selectList = ref<ITreeNode[]>([]);
-
-function getSelectList(treeData: ITree[], parentId: string | null = null) {
-  let list: ITreeNode[] = [];
-
-  for (let item of treeData) {
-    let flatItem = {
-      id: item.id,
-      label: item.label,
-      parentId,
-    };
-    list.push(flatItem);
-
-    if (item.children && item.children.length > 0) {
-      let children = getSelectList(item.children, item.id);
-      list = list.concat(children);
-    }
-  }
-
-  return list;
-}
-
-
-selectList.value = getSelectList(treeData.value);
 
 </script>
 
@@ -55,7 +25,11 @@ selectList.value = getSelectList(treeData.value);
         </option>
       </select>
     </div>
-    <TreeView :tree-data="treeData" v-model="selectedId" />
+    <Tree
+      v-if="treeData.length > 0"
+      :tree-data="treeData"
+      v-model="selectedId"
+    />
   </div>
   <main class="main">
     <div class="container">test</div>

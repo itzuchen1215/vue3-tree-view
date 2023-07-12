@@ -2,6 +2,7 @@
 import type { PropType } from 'vue';
 import type { ITreeNode } from './types';
 import IconExpanded from '@/components/icons/IconExpanded.vue';
+import { useTreeViewStore } from './treeStore';
 
 
 const emit = defineEmits(['clickNode'])
@@ -23,13 +24,25 @@ const props = defineProps({
     type: Boolean,
     default: false,
   },
+  level: {
+    type: Number,
+    default: 0,
+  }
 });
 
+const {
+  updateExpendedIds,
+  setExpendedIdsMapping,
+  updateSelectedId,
+} = useTreeViewStore()!;
+
+
 function handleClickNode() {
-  emit('clickNode', {
-    id: props.node.id,
-    hasChidren: props.hasChidren,
-  })
+  if (props.hasChidren) {
+    updateExpendedIds(props.node.id, props.level);
+  }
+  setExpendedIdsMapping(props.node.id);
+  updateSelectedId(props.node.id);
 }
 
 </script>
