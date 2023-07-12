@@ -1,0 +1,40 @@
+@import './reset.scss';
+@import './base.scss';
+
+:root {
+  // nav
+  --navbar-height: 48px;
+  --navbar-padding: 0 20px;
+  //sidemenu
+  --sidebar-width: 240px;
+  --sidebar-padding: 6px 12px;
+  // tree-view-base-style
+  --tree-label-font-color: #675D50;
+  --tree-label-font-size: 14px;
+  --tree-highlight-bg-color: #F3DEBA;
+  --tree-icon-color: #A9907E;
+  --tree-node-height: 28px;
+}
+
+
+#app {
+  // max-width: 480px;
+  // margin: 0 auto;
+  // font-weight: normal;
+  // padding: 12px;
+}
+
+
+// /* .collapse-transition {
+//   transition: getCssVar('transition-duration') height ease-in-out,
+//     getCssVar('transition-duration') padding-top ease-in-out,
+//     getCssVar('transition-duration') padding-bottom ease-in-out;
+// }
+
+// .#{$namespace}-collapse-transition-leave-active,
+// .#{$namespace}-collapse-transition-enter-active {
+//   transition: getCssVar('transition-duration') max-height ease-in-out,
+//     getCssVar('transition-duration') padding-top ease-in-out,
+//     getCssVar('transition-duration') padding-bottom ease-in-out;
+// }
+//  */
