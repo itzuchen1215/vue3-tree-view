@@ -47,8 +47,8 @@ const [
   // actions
   function updateSelectedId(id: string | null) {
     selectedId.value = id;
-    // emit('update:modelValue', id);
   }
+
   function updateExpendedIds(id: string | null, level: number) {
     if (expendedIds.value[level] === id) {
       expendedIds.value[level] = null;
@@ -58,9 +58,6 @@ const [
   }
 
   function setExpendedIdsMapping(id: string | null) {
-    if (expendedIdsMap.has(id)) {
-      return;
-    }
     expendedIdsMap.set(id, structuredClone(toRaw(expendedIds.value)));
   }
 
@@ -78,7 +75,6 @@ const [
     }
     if (selectedItem.level === 0) {
       expendedIds.value[selectedItem.level] = id;
-      setExpendedIdsMapping(id);
       return;
     }
     const expendIds = new Array(selectedItem.level + 1).fill(null);
@@ -91,20 +87,17 @@ const [
       }
     }
     expendIds.forEach((ids, index) => expendedIds.value[index] = ids);
-    // TODO: need double check
-    setExpendedIdsMapping(id);
   }
 
   
   watch(selectedId, (id: string | null) => {
-    const ids = getExpendedIdsFromMap(id);
-    if (!ids || expendedIds.value !== ids) {
+    const ids: (string | null)[] = getExpendedIdsFromMap(id);
+    if (!ids) {
       findExpendedIdsFromSelectedId(id);
-      console.log('find', id, expendedIds.value);
     } else {
-      expendedIds.value = [...ids];
-      console.log('set', id, expendedIds.value);
+      ids.forEach((id, index) => expendedIds.value[index] = id);
     }
+    setExpendedIdsMapping(id);
   }, {immediate: true});
 
 

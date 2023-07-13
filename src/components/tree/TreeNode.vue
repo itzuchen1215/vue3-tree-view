@@ -33,7 +33,6 @@ const props = defineProps({
 const {
   updateExpendedIds,
   setExpendedIdsMapping,
-  updateSelectedId,
 } = useTreeViewStore()!;
 
 
@@ -41,9 +40,7 @@ function handleClickNode() {
   if (props.hasChidren) {
     updateExpendedIds(props.node.id, props.level);
   }
-  // updateSelectedId(props.node.id);
   setExpendedIdsMapping(props.node.id);
-  console.log('handleClickNode');
   emit('clickNode', props.node.id);
 }
 

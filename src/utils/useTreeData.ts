@@ -1,5 +1,4 @@
 import type { ITree } from "@/components/tree/types"
-import type { ITreeNode } from "@/components/tree/types";
 import { ref } from "vue";
 
 const defaultList: ITree[] = [
