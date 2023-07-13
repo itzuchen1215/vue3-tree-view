@@ -4,6 +4,10 @@ import TreeNode from './TreeNode.vue';
 import type { ITree } from './types';
 import { useTreeViewStore } from '@/components/tree/treeStore';
 
+defineOptions({
+  inheritAttrs: false,
+})
+
 const {
   selectedId,
   expendedIds,
@@ -41,6 +45,7 @@ function isSelected (id: string) {
       :level="level"
       :selected="isSelected(id)"
       :expended="isExpend(id)"
+      v-bind="$attrs"
     >
       <template #default v-if="children">
         <transition name="tree-chidren">

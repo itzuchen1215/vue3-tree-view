@@ -5,6 +5,8 @@ import TreeList from '@/components/tree/TreeList.vue';
 import type { ITree } from './types';
 import { useProvideTreeViewStore } from './treeStore';
 
+const emit = defineEmits(['update:modelValue'])
+
 const props = defineProps({
   treeData: {
     type: Array as PropType<ITree[]>,
@@ -18,35 +20,24 @@ const props = defineProps({
 
 const {
   selectedId,
-  expendedIds,
-  updateSelectedId,
 } = useProvideTreeViewStore({
   treeData: props.treeData,
   selectedId: props.modelValue,
-  expendedIds: [],
 });
 
-// TODO: bind v-model
-console.log(props.modelValue);
+
 watch(() => props.modelValue, (id: string | null) => {
-  console.log(id);
   selectedId.value = id;
 }, {immediate: true});
 
-// const selectedId = computed({
-//   get() {
-//     return props.modelValue
-//   },
-//   set(value) {
-//     emit('update:modelValue', value || null)
-//   }
-// })
-
+function handleClickNode(id: string | null) {
+  emit('update:modelValue', id);
+}
 
 </script>
 
 <template>
-  <TreeList :tree-data="treeData" />
+  <TreeList :tree-data="treeData" @clickNode="handleClickNode" />
 </template>
 
 <style lang="scss" scoped>

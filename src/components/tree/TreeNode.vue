@@ -43,6 +43,8 @@ function handleClickNode() {
   }
   setExpendedIdsMapping(props.node.id);
   updateSelectedId(props.node.id);
+  console.log('handleClickNode');
+  emit('clickNode', props.node.id);
 }
 
 </script>

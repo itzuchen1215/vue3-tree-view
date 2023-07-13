@@ -8,7 +8,7 @@ const [
 ] = createInjectionState((initialValue: ITreeInitValue) => {
   // state
   const selectedId = ref(initialValue.selectedId);
-  const expendedIds = ref<(string | null)[]>([null, null, null]);
+  const expendedIds = ref<(string | null)[]>([]);
   const expendedIdsMap = reactive(new Map());
   const flatList = ref<ITreeFlatList[]>([]);
 
@@ -42,9 +42,7 @@ const [
     }
     return list;
   }
-  console.log(initialValue.treeData);
   flatList.value = getFlatList(initialValue.treeData);
-  console.log(flatList.value);
 
   // actions
   function updateSelectedId(id: string | null) {
@@ -102,9 +100,10 @@ const [
     const ids = getExpendedIdsFromMap(id);
     if (!ids || expendedIds.value !== ids) {
       findExpendedIdsFromSelectedId(id);
-      console.log('find', expendedIdsMap);
+      console.log('find', id, expendedIds.value);
     } else {
       expendedIds.value = [...ids];
+      console.log('set', id, expendedIds.value);
     }
   }, {immediate: true});
 
