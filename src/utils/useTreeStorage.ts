@@ -1,16 +1,16 @@
 export function useTreeStorage() {
-  const treeIdKey = 'itzu_tree-id';
+  const treeIdKey = 'itzu_tree-id'
 
   function setSelectedIdLocalStorage(id: string) {
     if (!id) {
-      return;
+      return
     }
-    localStorage.setItem(treeIdKey, id);
-  };
+    localStorage.setItem(treeIdKey, id)
+  }
 
   function getSelectedIdLocalStorage(): string | null {
-    return localStorage.getItem(treeIdKey);
-  };
+    return localStorage.getItem(treeIdKey)
+  }
 
   // function clearLocalStorage() {
   //   localStorage.removeItem(treeIdKey);
@@ -18,6 +18,6 @@ export function useTreeStorage() {
 
   return {
     setSelectedIdLocalStorage,
-    getSelectedIdLocalStorage,
+    getSelectedIdLocalStorage
   }
 }

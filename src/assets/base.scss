@@ -6,7 +6,6 @@
   font-weight: normal;
 }
 
-
 ::-webkit-scrollbar {
   width: 10px;
 }
@@ -14,11 +13,11 @@
   background: transparent;
 }
 ::-webkit-scrollbar-thumb {
-  background: #CCC; 
+  background: #ccc;
   border-radius: 6px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #BBB; 
+  background: #bbb;
 }
 
 body {

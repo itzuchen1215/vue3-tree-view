@@ -1,37 +1,29 @@
 <script setup lang="ts">
-import { ref, watch } from 'vue';
-import TreeView from './components/tree/TreeView.vue';
-import { useTreeData } from '@/utils/useTreeData';
-import { useTreeStorage } from '@/utils/useTreeStorage';
+import { ref, watch } from 'vue'
+import TreeView from './components/tree/TreeView.vue'
+import { useTreeData } from '@/utils/useTreeData'
+import { useTreeStorage } from '@/utils/useTreeStorage'
 
-const {
-  treeData,
-  selectList,
-  getTreeData
-} = useTreeData();
+const { treeData, selectList, getTreeData } = useTreeData()
 
-const {
-  setSelectedIdLocalStorage,
-  getSelectedIdLocalStorage,
-} = useTreeStorage();
+const { setSelectedIdLocalStorage, getSelectedIdLocalStorage } = useTreeStorage()
 
-const selectedId = ref<string | null>(null);
+const selectedId = ref<string | null>(null)
 
 function getInitId() {
   if (getSelectedIdLocalStorage()) {
-    selectedId.value = getSelectedIdLocalStorage();
+    selectedId.value = getSelectedIdLocalStorage()
   }
 }
 
 watch(selectedId, (id: string | null) => {
   if (id) {
-    setSelectedIdLocalStorage(id);
+    setSelectedIdLocalStorage(id)
   }
-});
+})
 
-getInitId();
-getTreeData();
-
+getInitId()
+getTreeData()
 </script>
 
 <template>
@@ -46,11 +38,7 @@ getTreeData();
         </option>
       </select>
     </div>
-    <TreeView
-      v-if="treeData.length > 0"
-      :tree-data="treeData"
-      v-model="selectedId"
-    />
+    <TreeView v-if="treeData.length > 0" :tree-data="treeData" v-model="selectedId" />
   </div>
 </template>
 
@@ -65,7 +53,7 @@ getTreeData();
   align-items: center;
   font-size: 20px;
   padding: var(--navbar-padding);
-  box-shadow: 1px 1px 3px #DDD;
+  box-shadow: 1px 1px 3px #ddd;
   z-index: 5;
 }
 
@@ -86,7 +74,7 @@ getTreeData();
   left: 0;
   overflow-y: auto;
   overflow-x: hidden;
-  box-shadow: 1px 1px 3px #DDD;
-  background-color: #FAFAFA;
+  box-shadow: 1px 1px 3px #ddd;
+  background-color: #fafafa;
 }
 </style>
