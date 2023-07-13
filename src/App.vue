@@ -32,8 +32,6 @@ watch(selectedId, (id: string | null) => {
 getInitId();
 getTreeData();
 
-
-
 </script>
 
 <template>

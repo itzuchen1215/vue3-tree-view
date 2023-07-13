@@ -31,10 +31,17 @@ const props = defineProps({
 });
 
 const {
-  toggleExpandedIds,
+  expandedIds,
   setExpandedIdsMapping,
 } = useTreeViewStore()!;
 
+function toggleExpandedIds(id: string | null, level: number) {
+  if (expandedIds.value[level] === id) {
+    expandedIds.value[level] = null;
+    return;
+  }
+  expandedIds.value[level] = id;
+}
 
 function handleClickNode() {
   if (props.hasChidren) {

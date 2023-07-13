@@ -66,7 +66,7 @@ function isSelected (id: string) {
 
 .tree-chidren-enter-active,
 .tree-chidren-leave-active {
-  max-height: 240px; // TODO: hard-code now, need enhancement
+  max-height: 240px; // hard-code, need enhancement
   transition: max-height 0.35s ease-in-out;
 }
 

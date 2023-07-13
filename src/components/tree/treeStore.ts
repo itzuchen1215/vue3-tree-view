@@ -1,5 +1,5 @@
 import { createInjectionState } from '@vueuse/shared';
-import { reactive, ref, toRaw, watch } from 'vue';
+import { reactive, ref, toRaw } from 'vue';
 import type { ITree, ITreeFlatList, ITreeInitValue } from './types';
 
 const [
@@ -12,7 +12,7 @@ const [
   const expandedIdsMap = reactive(new Map());
   const flatList = ref<ITreeFlatList[]>([]);
 
- 
+  // !need enhancement
   function getFlatList(treeData: ITree[], parentId: string | null = null, level = 0) {
     let list: ITreeFlatList[] = [];
     const levelCount = level;
@@ -44,17 +44,8 @@ const [
   }
   flatList.value = getFlatList(initialValue.treeData);
 
-  // actions
   function setSelectedId(id: string | null) {
     selectedId.value = id;
-  }
-
-  function toggleExpandedIds(id: string | null, level: number) {
-    if (expandedIds.value[level] === id) {
-      expandedIds.value[level] = null;
-      return;
-    }
-    expandedIds.value[level] = id;
   }
 
   function setExpandedIdsMapping(id: string | null) {
@@ -75,36 +66,13 @@ const [
     return flatList.value.find(item => item.id === id);
   }
 
-  function findExpandedIdsFromSelectedId(id: string | null) {
-    const selectedItem = getSelectedItem(id);
-    if (!selectedItem) {
-      return;
-    }
-    if (selectedItem.level === 0) {
-      expandedIds.value[selectedItem.level] = id;
-      return;
-    }
-    const expandIds = new Array(selectedItem.level + 1).fill(null);
-    let parentId = selectedItem.hasChidren ? selectedItem.id : selectedItem.parentId;
-    for(let i = 0; i <= selectedItem.level; i++) {
-      const parentItem = getSelectedItem(parentId);
-      if (parentItem) {
-        parentId = parentItem?.parentId;
-        expandIds[parentItem?.level] = parentItem?.id;
-      }
-    }
-    expandIds.forEach((ids, index) => expandedIds.value[index] = ids);
-  }
-
 
   return {
     selectedId,
     expandedIds,
     setSelectedId,
-    toggleExpandedIds,
     setExpandedIdsMapping,
     getExpandedIdsFromMap,
-    findExpandedIdsFromSelectedId,
     getSelectedItem,
   }
 })
