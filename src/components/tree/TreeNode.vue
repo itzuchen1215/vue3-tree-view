@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import type { PropType } from 'vue';
 import type { ITreeNode } from './types';
-import IconExpanded from '@/components/icons/IconExpanded.vue';
 import { useTreeViewStore } from './treeStore';
+import IconExpanded from '@/components/icons/IconExpanded.vue';
 
 
 const emit = defineEmits(['clickNode'])
@@ -41,8 +41,8 @@ function handleClickNode() {
   if (props.hasChidren) {
     updateExpendedIds(props.node.id, props.level);
   }
+  // updateSelectedId(props.node.id);
   setExpendedIdsMapping(props.node.id);
-  updateSelectedId(props.node.id);
   console.log('handleClickNode');
   emit('clickNode', props.node.id);
 }
@@ -51,8 +51,9 @@ function handleClickNode() {
 
 <template>
   <li
-    :class="['tree-list', { expended }, { selected }]"
+    :class="['tree-list-item', { expended }, { selected }]"
     :data-node-id="node.id"
+    :data-node-level="props.level"
   >
     <div class="tree-node" @click="handleClickNode">
       <div class="tree-node__icon">

@@ -1,11 +1,12 @@
 <script setup lang="ts">
-import { ref, type PropType, computed, toRaw, watch } from 'vue';
+import { type PropType, watch } from 'vue';
 import TreeList from '@/components/tree/TreeList.vue';
-// import { useProvideTreeViewStore } from '@/components/tree/treeStore';
 import type { ITree } from './types';
 import { useProvideTreeViewStore } from './treeStore';
 
-const emit = defineEmits(['update:modelValue'])
+const emit = defineEmits<{
+  'update:modelValue': [id: string | null]
+}>()
 
 const props = defineProps({
   treeData: {
@@ -19,7 +20,7 @@ const props = defineProps({
 });
 
 const {
-  selectedId,
+  updateSelectedId,
 } = useProvideTreeViewStore({
   treeData: props.treeData,
   selectedId: props.modelValue,
@@ -27,7 +28,7 @@ const {
 
 
 watch(() => props.modelValue, (id: string | null) => {
-  selectedId.value = id;
+  updateSelectedId(id);
 }, {immediate: true});
 
 function handleClickNode(id: string | null) {
@@ -37,7 +38,10 @@ function handleClickNode(id: string | null) {
 </script>
 
 <template>
-  <TreeList :tree-data="treeData" @clickNode="handleClickNode" />
+  <TreeList
+    :tree-data="treeData"
+    @clickNode="handleClickNode"
+  />
 </template>
 
 <style lang="scss" scoped>

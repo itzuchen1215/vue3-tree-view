@@ -2,7 +2,7 @@
 import type { PropType } from 'vue';
 import TreeNode from './TreeNode.vue';
 import type { ITree } from './types';
-import { useTreeViewStore } from '@/components/tree/treeStore';
+import { useTreeViewStore } from './treeStore';
 
 defineOptions({
   inheritAttrs: false,
@@ -37,7 +37,7 @@ function isSelected (id: string) {
 </script>
 
 <template>
-<ul :class="{ 'tree' : level === 0 }">
+<ul :class="['tree-list', { 'tree-list-child': level > 0 }]">
   <template v-for="{ id, label, children } in treeData" :key="id">
     <TreeNode
       :node="{ id, label }"
@@ -51,10 +51,9 @@ function isSelected (id: string) {
         <transition name="tree-chidren">
           <TreeList
             v-show="isExpend(id)"
-            :style="{ '--tree-children-length': children.length }"
             :treeData="children"
-            class="tree-children"
             :level="level + 1"
+            v-bind="$attrs"
           />
         </transition>
       </template>
@@ -67,7 +66,8 @@ function isSelected (id: string) {
 
 .tree-chidren-enter-active,
 .tree-chidren-leave-active {
-  max-height: calc(var(--tree-node-height) * var(--tree-children-length));
+  // max-height: calc(var(--tree-node-height) * var(--tree-children-length));
+  max-height: 250px;
   transition: max-height 0.25s ease-in-out;
 }
 
@@ -76,9 +76,8 @@ function isSelected (id: string) {
   max-height: 0;
 }
 
-.tree {
-  padding: 6px;
-  &-children {
+.tree-list {
+  &-child {
     padding-left: 20px;
     overflow: hidden;
   }

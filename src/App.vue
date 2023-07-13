@@ -1,13 +1,12 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import Tree from './components/tree/Tree.vue';
+import TreeView from './components/tree/TreeView.vue';
 import { useTreeData } from '@/utils/useTreeData';
 
 
 const { treeData, selectList, getTreeData } = useTreeData();
 const selectedId = ref<string | null>(null);
-
-// simulate async api get list
+// simulate async api
 getTreeData();
 
 
@@ -25,7 +24,7 @@ getTreeData();
         </option>
       </select>
     </div>
-    <Tree
+    <TreeView
       v-if="treeData.length > 0"
       :tree-data="treeData"
       v-model="selectedId"

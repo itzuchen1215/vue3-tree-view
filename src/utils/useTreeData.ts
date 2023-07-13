@@ -130,8 +130,8 @@ export function useTreeData() {
   function getSelectList(treeData: ITree[], parentId: string | null = null): ISelectList[] {
     let list: ISelectList[] = [];
   
-    for (let item of treeData) {
-      let flatItem = {
+    for (const item of treeData) {
+      const flatItem = {
         id: item.id,
         label: item.label,
         parentId,
@@ -139,7 +139,7 @@ export function useTreeData() {
       list.push(flatItem);
   
       if (item.children && item.children.length > 0) {
-        let children = getSelectList(item.children, item.id);
+        const children = getSelectList(item.children, item.id);
         list = list.concat(children);
       }
     }
