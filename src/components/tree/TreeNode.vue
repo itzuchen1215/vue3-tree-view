@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { PropType } from 'vue';
-import type { ITreeNode } from './types';
+import type { TreeNode } from './types';
 import { useTreeViewStore } from './treeStore';
 import IconExpanded from '@/components/icons/IconExpanded.vue';
 
@@ -9,7 +9,7 @@ const emit = defineEmits(['clickNode'])
 
 const props = defineProps({
   node: {
-    type: Object as PropType<ITreeNode>,
+    type: Object as PropType<TreeNode>,
     default: () => null,
   },
   hasChidren: {
@@ -20,7 +20,7 @@ const props = defineProps({
     type: Boolean,
     default: false,
   },
-  expended: {
+  expanded: {
     type: Boolean,
     default: false,
   },
@@ -31,16 +31,16 @@ const props = defineProps({
 });
 
 const {
-  updateExpendedIds,
-  setExpendedIdsMapping,
+  toggleExpandedIds,
+  setExpandedIdsMapping,
 } = useTreeViewStore()!;
 
 
 function handleClickNode() {
   if (props.hasChidren) {
-    updateExpendedIds(props.node.id, props.level);
+    toggleExpandedIds(props.node.id, props.level);
   }
-  setExpendedIdsMapping(props.node.id);
+  setExpandedIdsMapping(props.node.id);
   emit('clickNode', props.node.id);
 }
 
@@ -48,7 +48,7 @@ function handleClickNode() {
 
 <template>
   <li
-    :class="['tree-list-item', { expended }, { selected }]"
+    :class="['tree-list-item', { expanded }, { selected }]"
     :data-node-id="node.id"
     :data-node-level="props.level"
   >
@@ -58,7 +58,7 @@ function handleClickNode() {
           v-show="hasChidren"
         />
       </div>
-      <span class="tree-node__label">{{ node.label || node.id }} | {{ node.id }}</span>
+      <span class="tree-node__label">{{ node.label || node.id }}</span>
     </div>
     <slot />
   </li>
@@ -85,7 +85,7 @@ function handleClickNode() {
   }
 }
 
-.expended {
+.expanded {
   & > .tree-node {
     .tree-node__icon {
       transform: rotate(90deg);

@@ -1,13 +1,37 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, watch } from 'vue';
 import TreeView from './components/tree/TreeView.vue';
 import { useTreeData } from '@/utils/useTreeData';
+import { useTreeStorage } from '@/utils/useTreeStorage';
 
+const {
+  treeData,
+  selectList,
+  getTreeData
+} = useTreeData();
 
-const { treeData, selectList, getTreeData } = useTreeData();
+const {
+  setSelectedIdLocalStorage,
+  getSelectedIdLocalStorage,
+} = useTreeStorage();
+
 const selectedId = ref<string | null>(null);
-// simulate async api
+
+function getInitId() {
+  if (getSelectedIdLocalStorage()) {
+    selectedId.value = getSelectedIdLocalStorage();
+  }
+}
+
+watch(selectedId, (id: string | null) => {
+  if (id) {
+    setSelectedIdLocalStorage(id);
+  }
+});
+
+getInitId();
 getTreeData();
+
 
 
 </script>
@@ -30,9 +54,6 @@ getTreeData();
       v-model="selectedId"
     />
   </div>
-  <main class="main">
-    <div class="container">test</div>
-  </main>
 </template>
 
 <style lang="scss" scoped>
@@ -70,16 +91,4 @@ getTreeData();
   box-shadow: 1px 1px 3px #DDD;
   background-color: #FAFAFA;
 }
-
-.main {
-  width: 100%;
-  height: 100vh;
-  padding-left: var(--sidebar-width);
-  padding-top: var(--navbar-height);
-}
-
-.container {
-  padding: 12px 16px;
-}
-
 </style>

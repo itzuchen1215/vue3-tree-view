@@ -146,7 +146,8 @@ export function useTreeData() {
     return list;
   }
 
-  async function getTreeData() {
+  // simulate async fetch api
+  function getTreeData() {
     setTimeout(() => {
       treeData.value = defaultList;
       selectList.value = getSelectList(treeData.value);

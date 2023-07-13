@@ -6,13 +6,13 @@ const [
   useProvideTreeViewStore,
   useTreeViewStore
 ] = createInjectionState((initialValue: ITreeInitValue) => {
-  // state
+
   const selectedId = ref(initialValue.selectedId);
-  const expendedIds = ref<(string | null)[]>([]);
-  const expendedIdsMap = reactive(new Map());
+  const expandedIds = ref<(string | null)[]>([]);
+  const expandedIdsMap = reactive(new Map());
   const flatList = ref<ITreeFlatList[]>([]);
 
-  // getters
+ 
   function getFlatList(treeData: ITree[], parentId: string | null = null, level = 0) {
     let list: ITreeFlatList[] = [];
     const levelCount = level;
@@ -45,71 +45,69 @@ const [
   flatList.value = getFlatList(initialValue.treeData);
 
   // actions
-  function updateSelectedId(id: string | null) {
+  function setSelectedId(id: string | null) {
     selectedId.value = id;
   }
 
-  function updateExpendedIds(id: string | null, level: number) {
-    if (expendedIds.value[level] === id) {
-      expendedIds.value[level] = null;
+  function toggleExpandedIds(id: string | null, level: number) {
+    if (expandedIds.value[level] === id) {
+      expandedIds.value[level] = null;
       return;
     }
-    expendedIds.value[level] = id;
+    expandedIds.value[level] = id;
   }
 
-  function setExpendedIdsMapping(id: string | null) {
-    expendedIdsMap.set(id, structuredClone(toRaw(expendedIds.value)));
-  }
-
-  function getExpendedIdsFromMap(id: string | null) {
-    if (!expendedIdsMap.has(id)) {
+  function setExpandedIdsMapping(id: string | null) {
+    if (!id) {
       return;
     }
-    return expendedIdsMap.get(id);
+    expandedIdsMap.set(id, structuredClone(toRaw(expandedIds.value)));
   }
 
-  function findExpendedIdsFromSelectedId(id: string | null) {
-    const selectedItem = flatList.value.find(item => item.id === id);
+  function getExpandedIdsFromMap(id: string | null) {
+    if (!id || !expandedIdsMap.has(id)) {
+      return;
+    }
+    return expandedIdsMap.get(id);
+  }
+
+  function getSelectedItem(id: string | null) {
+    return flatList.value.find(item => item.id === id);
+  }
+
+  function findExpandedIdsFromSelectedId(id: string | null) {
+    const selectedItem = getSelectedItem(id);
     if (!selectedItem) {
-      return; // error handler
+      return;
     }
     if (selectedItem.level === 0) {
-      expendedIds.value[selectedItem.level] = id;
+      expandedIds.value[selectedItem.level] = id;
       return;
     }
-    const expendIds = new Array(selectedItem.level + 1).fill(null);
+    const expandIds = new Array(selectedItem.level + 1).fill(null);
     let parentId = selectedItem.hasChidren ? selectedItem.id : selectedItem.parentId;
     for(let i = 0; i <= selectedItem.level; i++) {
-      const parentItem = flatList.value.find(item => item.id === parentId);
+      const parentItem = getSelectedItem(parentId);
       if (parentItem) {
         parentId = parentItem?.parentId;
-        expendIds[parentItem?.level] = parentItem?.id;
+        expandIds[parentItem?.level] = parentItem?.id;
       }
     }
-    expendIds.forEach((ids, index) => expendedIds.value[index] = ids);
+    expandIds.forEach((ids, index) => expandedIds.value[index] = ids);
   }
-
-  
-  watch(selectedId, (id: string | null) => {
-    const ids: (string | null)[] = getExpendedIdsFromMap(id);
-    if (!ids) {
-      findExpendedIdsFromSelectedId(id);
-    } else {
-      ids.forEach((id, index) => expendedIds.value[index] = id);
-    }
-    setExpendedIdsMapping(id);
-  }, {immediate: true});
 
 
   return {
     selectedId,
-    expendedIds,
-    updateSelectedId,
-    updateExpendedIds,
-    setExpendedIdsMapping,
+    expandedIds,
+    setSelectedId,
+    toggleExpandedIds,
+    setExpandedIdsMapping,
+    getExpandedIdsFromMap,
+    findExpandedIdsFromSelectedId,
+    getSelectedItem,
   }
 })
 
 export { useProvideTreeViewStore }
-// If you want to hide `useTreeViewStore` and wrap it in default value logic or throw error logic, please don't export `useTreeViewStore`
 export { useTreeViewStore }

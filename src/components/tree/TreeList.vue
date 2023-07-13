@@ -10,7 +10,7 @@ defineOptions({
 
 const {
   selectedId,
-  expendedIds,
+  expandedIds,
 } = useTreeViewStore()!;
 
 const props = defineProps({
@@ -25,8 +25,8 @@ const props = defineProps({
 });
 
 
-function isExpend (id: string) {
-  return expendedIds.value[props.level] === id;
+function isExpand (id: string) {
+  return expandedIds.value[props.level] === id;
 };
 
 function isSelected (id: string) {
@@ -44,13 +44,13 @@ function isSelected (id: string) {
       :hasChidren="!!children"
       :level="level"
       :selected="isSelected(id)"
-      :expended="isExpend(id)"
+      :expanded="isExpand(id)"
       v-bind="$attrs"
     >
       <template #default v-if="children">
         <transition name="tree-chidren">
           <TreeList
-            v-show="isExpend(id)"
+            v-show="isExpand(id)"
             :treeData="children"
             :level="level + 1"
             v-bind="$attrs"
@@ -66,9 +66,8 @@ function isSelected (id: string) {
 
 .tree-chidren-enter-active,
 .tree-chidren-leave-active {
-  // max-height: calc(var(--tree-node-height) * var(--tree-children-length));
-  max-height: 250px;
-  transition: max-height 0.25s ease-in-out;
+  max-height: 240px; // TODO: hard-code now, need enhancement
+  transition: max-height 0.35s ease-in-out;
 }
 
 .tree-chidren-enter-from,

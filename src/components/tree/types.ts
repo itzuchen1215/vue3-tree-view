@@ -4,12 +4,12 @@ export interface ITree {
   children?: ITree[];
 }
 
-export type ITreeNode = Omit<ITree, 'children'>;
+export type TreeNode = Omit<ITree, 'children'>;
 
 export interface ITreeInitValue {
   treeData: ITree[];
   selectedId: string | null;
-  expendedIds?: (string | null)[];
+  expandedIds?: (string | null)[];
 }
 
 export interface ITreeFlatList {
