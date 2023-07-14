@@ -14,6 +14,7 @@ const props = defineProps<{
 }>()
 
 const {
+  selectedId,
   setSelectedId,
   expandedIds,
   getExpandedIdsFromMap,
@@ -76,6 +77,9 @@ function findExpandedIdsFromSelectedId(id: string | null) {
 
 function handleClickNode(id: string | null) {
   clickFlag.value = true
+  if (id === selectedId.value) {
+    clickFlag.value = false
+  }
   emit('update:modelValue', id)
 }
 </script>
