@@ -43,8 +43,14 @@ watch(
       findExpandedIdsFromSelectedId(id)
     } else {
       const selectedItem = getSelectedItem(id)
+      if (!selectedItem) {
+        return;
+      }
+      if (ids.indexOf(id) < 0) {
+        ids[selectedItem.level] = id;
+      }
       ids.forEach((value, idx) => {
-        if (selectedItem && idx <= selectedItem.level) {
+        if (idx <= selectedItem.level) {
           expandedIds.value[idx] = value
         }
       })
